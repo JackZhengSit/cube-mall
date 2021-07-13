@@ -1,0 +1,20 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    alicloud:
+      oss:
+        endpoint: oss-cn-shanghai.aliyuncs.com
+      access-key: LTAI5tRns4Hj4hA8ZbqXRx5A
+      secret-key: FphunSx6WVgf6Y3K4LBdtCCMkLaVxC
+  application:
+    name: cubemall-third-party
+#alibaba:
+#  cloud:
+#    access-key: LTAI5tRns4Hj4hA8ZbqXRx5A
+#    secret-key: FphunSx6WVgf6Y3K4LBdtCCMkLaVxC
+#    oss:
+#      endpoint: oss-cn-shanghai.aliyuncs.com
+server:
+  port: 30000

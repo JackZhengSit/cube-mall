@@ -17,6 +17,7 @@
         <module>cubemall-product</module>
         <module>cubemall-third-party</module>
         <module>cubemall-gateway</module>
+        <module>cubemall-search</module>
     </modules>
 
     <build>

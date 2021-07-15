@@ -16,6 +16,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,20 +66,21 @@ public class SearchManageer {
         SearchRequest request=new SearchRequest("blog_2")
                 .source(new SearchSourceBuilder()
 
-                        .query(QueryBuilders.matchQuery("title","明星"))
+                        .query(QueryBuilders.matchQuery("title","明星开饭店"))
 
-//                        .postFilter(QueryBuilders.)
+                        .postFilter(QueryBuilders.termQuery("title","翻车"))
 
-
-
-
-
-
-
+                        .highlighter(new HighlightBuilder()
+                                .field("title")
+                                .field("content")
+                                .preTags("<em>")
+                                .postTags("</em>")
+                        )
+                        .from(0)
+                        .size(30)
                 );
         SearchResponse response=client.search(request, RequestOptions.DEFAULT);
-        printResponse(response);
-
+        highlightResultPrint(response);
     }
 
 
@@ -86,6 +88,12 @@ public class SearchManageer {
         long total=response.getHits().getTotalHits().value;
         log.info("总记录数：{}",total);
         Stream.of(response.getHits().getHits()).forEach(hit-> log.info(hit.getSourceAsString()));
+    }
+
+    private void highlightResultPrint(SearchResponse response){
+        long total=response.getHits().getTotalHits().value;
+        log.info("总记录数：{}",total);
+        Stream.of(response.getHits().getHits()).forEach(hit-> log.info(String.valueOf(hit.getHighlightFields())));
     }
 
 

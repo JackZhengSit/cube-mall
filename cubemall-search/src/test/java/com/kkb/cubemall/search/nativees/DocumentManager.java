@@ -3,6 +3,7 @@ package com.kkb.cubemall.search.nativees;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -11,7 +12,11 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.elasticsearch.action.bulk.BulkRequest;
 
+import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
@@ -25,6 +30,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.stream.Stream;
 
+
+@Slf4j
 public class DocumentManager {
     private RestHighLevelClient client;
 
@@ -121,6 +128,37 @@ public class DocumentManager {
                             .source(((JSONObject)j).toJSONString(), XContentType.JSON));
                 });
         client.bulk(request, RequestOptions.DEFAULT);
+    }
+
+    @Test
+    public void addDocument() throws IOException {
+
+        IndexRequest request=new IndexRequest()
+                .index("hello")
+                .id("0")
+                .source("{\"id\":\"2\",\"title\":\"测试文档1\",\"content\":\"测试文档中的内容\"}",XContentType.JSON);
+
+        IndexResponse response=client.index(request,RequestOptions.DEFAULT);
+        log.info("回复：{}",response);
+    }
+
+    @Test
+    public void updateDocument() throws IOException {
+        UpdateRequest request=new UpdateRequest()
+                .index("hello")
+                .id("0")
+                .doc("{\"id\":\"2\",\"title\":\"测试文档1\",\"content\":\"测试文档中的内容111111111\"}",XContentType.JSON);
+        UpdateResponse response = client.update(request, RequestOptions.DEFAULT);
+
+        log.info("回复：{}",response);
+    }
+
+    @Test
+    public void deleteDocument() throws IOException {
+        DeleteRequest request=new DeleteRequest()
+                .index("hello")
+                .id("0");
+        client.delete(request,RequestOptions.DEFAULT);
     }
 
     @After

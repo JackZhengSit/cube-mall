@@ -19,6 +19,8 @@ spring:
     rest:
       uris:
         - 139.224.55.63:9200
+      username: elastic
+      password: jack@elastic
 mybatis-plus:
   mapper-locations: classpath:/mappers/*.xml
   global-config:

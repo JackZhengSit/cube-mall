@@ -34,7 +34,7 @@ public class CategoryController {
     /**
      * 查询出所有分类,以树形结构组装起来
      */
-    @RequestMapping("/list/tree")
+    @RequestMapping("/tree")
     //@RequiresPermissions("product:category:list")
     public R list(){
         List<CategoryEntity> entities = categoryService.listWithTree();

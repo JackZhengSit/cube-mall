@@ -2,7 +2,10 @@ package com.kkb.cubemall.product.service.impl;
 
 import com.kkb.cubemall.common.utils.PageUtils;
 import com.kkb.cubemall.common.utils.Query;
+import com.kkb.cubemall.common.utils.R;
+import com.kkb.cubemall.product.dto.SpuInfo;
 import com.kkb.cubemall.product.entity.*;
+import com.kkb.cubemall.product.feign.SearchFeign;
 import com.kkb.cubemall.product.service.*;
 import com.kkb.cubemall.product.vo.*;
 import org.apache.commons.lang3.StringUtils;
@@ -41,6 +44,11 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     private SkuImagesService skuImagesService;
     @Autowired
     private SkuSaleAttrValueService skuSaleAttrValueService;
+    @Autowired
+    private SpuInfoDao spuInfoDao;
+
+    @Autowired
+    private SearchFeign searchFeign;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -181,6 +189,25 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
         IPage<SpuInfoEntity> page = this.page(new Query<SpuInfoEntity>().getPage(params), wrapper);
         return new PageUtils(page);
+    }
+
+    @Override
+    public void putOnSale(Long spuId) {
+        //1.根据spuID查询对象的商品数据。
+        SpuInfo spuInfo = spuInfoDao.getSpuInfoById(spuId);
+        //2.商品数据包含的字段（待研究）Entity中包含的字段。
+        //3.使用ElasticSearchRepository对象将数据添加到索引库中
+        searchFeign.save(spuInfo);
+    }
+
+    @Override
+    public R syncSpuInfo() {
+        //1）把所有的商品数据查询出来
+        List<SpuInfo> infoList = spuInfoDao.getSpuInfoList();
+        //2）把商品数据导入到ES中
+        searchFeign.saveAll(infoList);
+        //返回结果
+        return R.ok();
     }
 
     /**

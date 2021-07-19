@@ -15,7 +15,7 @@ public class CubemallCorsConfiguration {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true); //可以携带cookie信息
-        config.addAllowedOrigin("*"); //允许所有的请求地址 访问
+        config.addAllowedOriginPattern("*"); //允许所有的请求地址 访问
         config.addAllowedHeader("*"); //允许携带所有的请求头信息
         config.addAllowedMethod("*"); //允许所有的请求方式 get post put delete option
 

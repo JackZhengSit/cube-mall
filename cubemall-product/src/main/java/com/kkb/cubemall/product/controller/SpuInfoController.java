@@ -7,11 +7,7 @@ import com.kkb.cubemall.common.utils.PageUtils;
 import com.kkb.cubemall.common.utils.R;
 import com.kkb.cubemall.product.vo.SpuSaveVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.kkb.cubemall.product.entity.SpuInfoEntity;
 import com.kkb.cubemall.product.service.SpuInfoService;
@@ -30,6 +26,7 @@ import com.kkb.cubemall.product.service.SpuInfoService;
 public class SpuInfoController {
     @Autowired
     private SpuInfoService spuInfoService;
+    private volatile boolean executeFlag = false;
 
     /**
      * 列表
@@ -85,6 +82,36 @@ public class SpuInfoController {
 		spuInfoService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
+    }
+
+
+    /**
+     * 上线产品
+     * @param spuId
+     * @return
+     */
+    @GetMapping("putonsale/{spuId}")
+    public R putOnSale(@PathVariable("spuId") Long spuId) {
+        spuInfoService.putOnSale(spuId);
+        return R.ok();
+    }
+
+    /**
+     * 商品数据全量同步
+     * @return
+     */
+    @GetMapping("/syncSpuInfo")
+    public R syncSpuInfo() {
+        if (!executeFlag) {
+            synchronized (this) {
+                if (!executeFlag) {
+                    executeFlag = true;
+                    R r = spuInfoService.syncSpuInfo();
+                    return r;
+                }
+            }
+        }
+        return R.ok("数据正导入中，请勿重复执行");
     }
 
 }

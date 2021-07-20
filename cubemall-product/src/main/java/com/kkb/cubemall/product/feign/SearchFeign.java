@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
-@FeignClient("cumbemall-search")
+@FeignClient("cubemall-search")
 public interface SearchFeign {
-    @PostMapping("/save")
+    @PostMapping("/search/SpuInfo/save")
     public R save(SpuInfo spuInfo);
 
-    @PostMapping("/saveAll")
+    @PostMapping("/search/SpuInfo/saveAll")
     public R saveAll(List<SpuInfo> spuInfoList);
 }

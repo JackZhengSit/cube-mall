@@ -17,9 +17,10 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ import java.util.stream.Stream;
 public class SearchManageer {
     RestHighLevelClient client;
 
-    @Before
+    @BeforeEach
     public void init(){
         final CredentialsProvider credentialsProvider=new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY,new UsernamePasswordCredentials("elastic","jack@elastic"));
@@ -97,7 +98,7 @@ public class SearchManageer {
     }
 
 
-    @After
+    @AfterEach
     public void release() throws IOException {
         client.close();
     }

@@ -17,9 +17,9 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ public class IndexManager {
 
     private RestHighLevelClient client;
 
-    @Before
+    @BeforeEach
     public void init(){
         final CredentialsProvider credentialsProvider=new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY,new UsernamePasswordCredentials("elastic","jack@elastic"));
@@ -125,7 +125,7 @@ public class IndexManager {
 
 
 
-    @After
+    @AfterEach
     public void release() throws IOException {
         client.close();
     }

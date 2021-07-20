@@ -90,7 +90,7 @@ public class SpuInfoController {
      * @param spuId
      * @return
      */
-    @GetMapping("putonsale/{spuId}")
+    @GetMapping("/{spuId}/up")
     public R putOnSale(@PathVariable("spuId") Long spuId) {
         spuInfoService.putOnSale(spuId);
         return R.ok();
@@ -100,13 +100,14 @@ public class SpuInfoController {
      * 商品数据全量同步
      * @return
      */
-    @GetMapping("/syncSpuInfo")
+    @GetMapping("/sync")
     public R syncSpuInfo() {
         if (!executeFlag) {
             synchronized (this) {
                 if (!executeFlag) {
                     executeFlag = true;
                     R r = spuInfoService.syncSpuInfo();
+                    executeFlag = false;
                     return r;
                 }
             }

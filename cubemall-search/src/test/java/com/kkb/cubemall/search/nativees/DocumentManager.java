@@ -23,9 +23,9 @@ import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 
 import org.elasticsearch.common.xcontent.XContentType;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.stream.Stream;
@@ -35,7 +35,7 @@ import java.util.stream.Stream;
 public class DocumentManager {
     private RestHighLevelClient client;
 
-    @Before
+    @BeforeEach
     public void init(){
         final CredentialsProvider credentialsProvider=new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY,new UsernamePasswordCredentials("elastic","jack@elastic"));
@@ -161,7 +161,7 @@ public class DocumentManager {
         client.delete(request,RequestOptions.DEFAULT);
     }
 
-    @After
+    @AfterEach
     public void release() throws IOException {
         client.close();
     }

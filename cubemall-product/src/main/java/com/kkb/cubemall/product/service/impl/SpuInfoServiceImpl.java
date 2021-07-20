@@ -192,10 +192,15 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     }
 
     @Override
+    @Transactional
     public void putOnSale(Long spuId) {
         //1.根据spuID查询对象的商品数据。
         SpuInfo spuInfo = spuInfoDao.getSpuInfoById(spuId);
-        //2.商品数据包含的字段（待研究）Entity中包含的字段。
+        //2.更新状态上架
+        SpuInfoEntity entity = new SpuInfoEntity();
+        entity.setId(spuId);
+        entity.setPublishStatus(1);
+        baseMapper.updateById(entity);
         //3.使用ElasticSearchRepository对象将数据添加到索引库中
         searchFeign.save(spuInfo);
     }

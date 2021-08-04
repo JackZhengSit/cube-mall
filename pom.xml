@@ -18,6 +18,8 @@
         <module>cubemall-third-party</module>
         <module>cubemall-gateway</module>
         <module>cubemall-search</module>
+        <module>cubemall-canal</module>
+        <module>cubemall-coupon</module>
     </modules>
 
     <build>
